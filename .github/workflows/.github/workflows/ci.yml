@@ -1,0 +1,99 @@
+name: Pipeline checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.11', '3.12']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: pip install -e .
+      - run: python -m unittest discover -s tests -v
+      - run: python -m payment_reliability.cli generate
+      - run: python -m payment_reliability.cli run
+      - name: Strict mode detects injected anomalies
+        run: |
+          set +e
+          python -m payment_reliability.cli run --strict
+          code=$?
+          test "$code" -eq 2
+      - uses: actions/upload-artifact@v4
+        with:
+          name: demo-report-${{ matrix.python-version }}
+          path: |
+            output/dashboard.html
+            output/summary.json
+            output/*.csv
+  postgres-dbt:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: payments
+          POSTGRES_PASSWORD: ci-demo-only
+          POSTGRES_DB: payments
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U payments -d payments"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      PGHOST: localhost
+      PGUSER: payments
+      PGDATABASE: payments
+      PGPASSWORD: ci-demo-only
+      TEST_POSTGRES: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -e '.[warehouse]'
+      - run: python -m unittest discover -s tests -v
+      - run: python -m payment_reliability.cli generate
+      - run: python -m payment_reliability.cli run --backend postgres
+      - run: dbt build --project-dir dbt --profiles-dir dbt
+  docker-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PGPASSWORD: ci-isolated-demo-only
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build image and start database
+        run: |
+          docker compose build pipeline
+          docker compose up -d --wait postgres
+      - name: Run container pipeline and dbt tests
+        run: docker compose run --rm pipeline
+      - name: Start dashboard
+        run: docker compose run -d --no-deps --service-ports dashboard
+      - name: Verify dashboard is served
+        run: |
+          python - <<'PY'
+          import time
+          import urllib.request
+          for attempt in range(30):
+              try:
+                  with urllib.request.urlopen('http://127.0.0.1:8080/dashboard.html', timeout=3) as response:
+                      page = response.read().decode()
+                  assert 'Payment Data Reliability' in page
+                  assert 'Reconciliation outcomes' in page
+                  break
+              except (OSError, AssertionError):
+                  if attempt == 29:
+                      raise
+                  time.sleep(1)
+          PY
+      - name: Container logs
+        if: always()
+        run: docker compose logs
+      - name: Remove isolated CI containers and volumes
+        if: always()
+        run: docker compose down --volumes --remove-orphans
