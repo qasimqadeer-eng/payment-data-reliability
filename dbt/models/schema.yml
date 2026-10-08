@@ -1,0 +1,38 @@
+version: 2
+sources:
+  - name: pipeline
+    schema: reliability
+    tables:
+      - name: blocked_payments
+      - name: clean_payments
+        columns:
+          - name: payment_id
+            tests: [unique, not_null]
+      - name: clean_refunds
+        columns:
+          - name: refund_id
+            tests: [unique, not_null]
+          - name: payment_id
+            tests:
+              - relationships:
+                  arguments:
+                    to: source('pipeline', 'clean_payments')
+                    field: payment_id
+      - name: clean_settlements
+        columns:
+          - name: settlement_id
+            tests: [unique, not_null]
+models:
+  - name: payment_reconciliation
+    description: One row per payment/settlement key, including orphan settlements.
+    columns:
+      - name: payment_id
+        tests: [unique, not_null]
+      - name: reconciliation_status
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [matched, pending, not_applicable, orphan_settlement, data_quality_blocked, currency_mismatch, settlement_before_payment, unexpected_settlement, excess_refund, missing_settlement, amount_mismatch]
+  - name: daily_metrics
+    description: Per-currency aggregates excluding orphan and mixed-currency rows. Exception values are diagnostic, not losses.

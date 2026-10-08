@@ -1,0 +1,38 @@
+{
+  "as_of": "2026-09-10T00:00:00+00:00",
+  "backend": "sqlite",
+  "clean_rows": {
+    "payments": 1000,
+    "refunds": 135,
+    "settlements": 940
+  },
+  "fee_policy": "2.9% rounded half up + 30 minor units; nonrefundable",
+  "grace_days": 2,
+  "input_sha256": {
+    "payments.csv": "08430362479c14dad34e7cc1a26cb4810a68bcf95324f2f6037879bd75b6d96f",
+    "refunds.csv": "6d76a7458b99209df80bd62f692019874e0911e5b01aa8cfe547550e48a7c384",
+    "settlements.csv": "7db1c363e937a03e1f1c42a7cfa44eb9b5999aced35e5a3244ac7e680869790e"
+  },
+  "quality_counts": {
+    "conflicting_duplicate": 2,
+    "exact_duplicate": 1,
+    "invalid_amount": 1,
+    "orphan_refund": 1
+  },
+  "raw_rows": {
+    "payments": 1004,
+    "refunds": 136,
+    "settlements": 940
+  },
+  "status_counts": {
+    "amount_mismatch": 1,
+    "currency_mismatch": 1,
+    "excess_refund": 1,
+    "matched": 936,
+    "missing_settlement": 1,
+    "not_applicable": 59,
+    "orphan_settlement": 1,
+    "pending": 1
+  },
+  "synthetic": true
+}

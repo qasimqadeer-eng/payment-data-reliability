@@ -1,0 +1,9 @@
+payment_date,currency,reconciliation_status,payment_count,gross_minor,refund_minor,expected_net_minor,settled_minor,variance_minor
+2026-09-01,CAD,not_applicable,26,1122714,0,0,0,0
+2026-09-01,CAD,matched,488,26025794,665467,24590928,24590928,0
+2026-09-01,USD,excess_refund,1,5165,5166,-181,4985,5166
+2026-09-01,USD,not_applicable,33,1560314,0,0,0,0
+2026-09-01,USD,missing_settlement,1,19289,0,18700,0,-18700
+2026-09-01,USD,matched,448,22818933,668039,21475701,21475701,0
+2026-09-01,USD,amount_mismatch,1,89696,0,87065,87190,125
+2026-09-09,USD,pending,1,10000,0,9680,0,-9680

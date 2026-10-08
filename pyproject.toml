@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "payment-data-reliability"
+version = "1.0.0"
+description = "Reproducible synthetic payment validation and settlement reconciliation"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+postgres = ["psycopg[binary]==3.2.6"]
+warehouse = ["psycopg[binary]==3.2.6", "dbt-postgres==1.9.0", "dbt-core==1.12.5"]
+
+[project.scripts]
+payment-reliability = "payment_reliability.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

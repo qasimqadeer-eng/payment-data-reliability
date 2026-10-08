@@ -1,0 +1,77 @@
+{
+  "environment": "PGlite embedded PostgreSQL via TCP; not Docker/native PostgreSQL 16",
+  "python_tests_passed": 19,
+  "dbt_results": [
+    {
+      "node": "test.payment_reliability.source_not_null_pipeline_clean_payments_payment_id.e066b2e250",
+      "status": "pass"
+    },
+    {
+      "node": "test.payment_reliability.source_not_null_pipeline_clean_refunds_refund_id.0bf1081fa3",
+      "status": "pass"
+    },
+    {
+      "node": "test.payment_reliability.source_not_null_pipeline_clean_settlements_settlement_id.75a69e6798",
+      "status": "pass"
+    },
+    {
+      "node": "test.payment_reliability.source_relationships_pipeline_clean_refunds_payment_id__payment_id__source_pipeline_clean_payments_.0523a94c99",
+      "status": "pass"
+    },
+    {
+      "node": "test.payment_reliability.source_unique_pipeline_clean_payments_payment_id.896a17eddf",
+      "status": "pass"
+    },
+    {
+      "node": "test.payment_reliability.source_unique_pipeline_clean_refunds_refund_id.db267c529e",
+      "status": "pass"
+    },
+    {
+      "node": "test.payment_reliability.source_unique_pipeline_clean_settlements_settlement_id.77a78b001f",
+      "status": "pass"
+    },
+    {
+      "node": "model.payment_reliability.payment_reconciliation",
+      "status": "success"
+    },
+    {
+      "node": "test.payment_reliability.accepted_values_payment_reconciliation_reconciliation_status__matched__pending__not_applicable__orphan_settlement__data_quality_blocked__currency_mismatch__settlement_before_payment__unexpected_settlement__excess_refund__missing_settlement__amount_mismatch.95513df05e",
+      "status": "pass"
+    },
+    {
+      "node": "test.payment_reliability.local_and_dbt_agree",
+      "status": "pass"
+    },
+    {
+      "node": "test.payment_reliability.matched_is_balanced",
+      "status": "pass"
+    },
+    {
+      "node": "test.payment_reliability.not_null_payment_reconciliation_payment_id.be594294c8",
+      "status": "pass"
+    },
+    {
+      "node": "test.payment_reliability.not_null_payment_reconciliation_reconciliation_status.6295d80f95",
+      "status": "pass"
+    },
+    {
+      "node": "test.payment_reliability.unique_payment_reconciliation_payment_id.567088142c",
+      "status": "pass"
+    },
+    {
+      "node": "model.payment_reliability.daily_metrics",
+      "status": "success"
+    }
+  ],
+  "browser": {
+    "desktop_width": 1440,
+    "mobile_width": 390,
+    "page_overflow": false,
+    "exception_toggle": "passed"
+  },
+  "remaining": [
+    "Docker image/Compose execution",
+    "Native PostgreSQL 16 CI",
+    "GitHub-hosted Actions run"
+  ]
+}

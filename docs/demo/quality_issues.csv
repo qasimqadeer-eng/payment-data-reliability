@@ -1,0 +1,6 @@
+source,row_number,record_id,rule,disposition,raw_json
+payments,1002,P000001,exact_duplicate,deduplicated,"{""amount_minor"": ""4278"", ""currency"": ""CAD"", ""occurred_at"": ""2026-09-01T12:00:00+00:00"", ""payment_id"": ""P000001"", ""status"": ""completed""}"
+payments,1004,BAD_AMOUNT,invalid_amount,quarantined,"{""amount_minor"": ""-50"", ""currency"": ""USD"", ""occurred_at"": ""2026-09-01T12:00:00+00:00"", ""payment_id"": ""BAD_AMOUNT"", ""status"": ""completed""}"
+refunds,136,ORPHAN_REFUND,orphan_refund,quarantined,"{""amount_minor"": ""100"", ""currency"": ""USD"", ""occurred_at"": ""2026-09-02T12:00:00+00:00"", ""payment_id"": ""UNKNOWN"", ""refund_id"": ""ORPHAN_REFUND"", ""status"": ""completed""}"
+payments,4,P000002,conflicting_duplicate,quarantined,"{""amount_minor"": ""33098"", ""currency"": ""USD"", ""occurred_at"": ""2026-09-01T12:00:00+00:00"", ""payment_id"": ""P000002"", ""status"": ""completed""}"
+payments,1003,P000002,conflicting_duplicate,quarantined,"{""amount_minor"": ""33198"", ""currency"": ""USD"", ""occurred_at"": ""2026-09-01T12:00:00+00:00"", ""payment_id"": ""P000002"", ""status"": ""completed""}"

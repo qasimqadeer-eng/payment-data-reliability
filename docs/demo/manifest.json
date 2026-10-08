@@ -1,0 +1,22 @@
+{
+  "synthetic": true,
+  "seed": 42,
+  "base_payments": 1000,
+  "as_of": "2026-09-10T00:00:00+00:00",
+  "rows": {
+    "payments": 1004,
+    "refunds": 136,
+    "settlements": 940
+  },
+  "controls": {
+    "P000001": "exact duplicate removed",
+    "P000002": "conflicting payments quarantined",
+    "P000003": "missing_settlement",
+    "P000004": "amount_mismatch",
+    "P000005": "currency_mismatch",
+    "P000006": "excess_refund",
+    "P_PENDING": "pending",
+    "BAD_AMOUNT": "invalid amount quarantined",
+    "ORPHAN_REFUND": "orphan refund quarantined"
+  }
+}
